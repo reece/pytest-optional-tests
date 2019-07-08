@@ -17,14 +17,12 @@ pytest-optional-tests
 Pytest plugin that supports easy declaration of optional
 tests. Optional tests are run only on request.
 
-Example:
+Example::
 
-```
-@optional.network
-@optional.longrunning
-def test_this():
-    assert False
-```
+  @optional.network
+  @optional.longrunning
+  def test_this():
+      assert False
 
 ----
 
