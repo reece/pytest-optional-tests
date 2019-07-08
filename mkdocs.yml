@@ -1,0 +1,10 @@
+site_name: pytest-optional-tests
+site_description: Easy declaration of optional tests (i.e., that are not run by default)
+site_author: Reece Hart
+
+theme: readthedocs
+
+repo_url: https://github.com/reece/pytest-optional-tests
+
+pages:
+- Home: index.md
