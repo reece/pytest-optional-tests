@@ -1,4 +1,3 @@
-=====================
 pytest-optional-tests
 =====================
 
@@ -14,22 +13,34 @@ pytest-optional-tests
     :target: https://travis-ci.org/reece/pytest-optional-tests
     :alt: See Build Status on Travis CI
 
-Pytest plugin that supports easy declaration of optional
-tests. Optional tests are run only on request.
 
-Example::
-
-  @optional.network
-  @optional.longrunning
-  def test_this():
-      assert False
+Provides easy declaration of optional tests using pytest markers.
+Optional tests are run only on request via the config file or command
+line.
 
 ----
 
-Requirements
-------------
+Motivation
+----------
 
-* pytest > 3.5.0
+Some classes of tests should not be run with every test invocation.
+It is often useful to define tests that be run only when specifically
+requested, such as tests that are slow, require network access, or
+work only in certain environments.
+
+Pytest provides mechanisms to run tests based on test names (-k) and
+to filter tests based on markers (-m).  Neither mechanism makes it
+easy to surpress certain tests by default.  For example, one might
+decorate tests with `@pytest.mark.network`, but disabling it by
+default requires a marker expression like `-m "not network"` with
+every invocation.  Markers and marker expressions become unwieldy when
+there are many markers.
+
+This plugin enables users to declare that certain markers are
+"optional markers".  When tests are decorated with an optional marker,
+the test is skipped by default.  Tests may be decorated with multiple
+markers, including multiple optional markers.  Optional tests may be
+enabled in the pytest ini file or the command line.
 
 
 Installation
@@ -43,7 +54,45 @@ You can install "pytest-optional-tests" via `pip`_ from `PyPI`_::
 Usage
 -----
 
-* TODO
+Optional markers must be declared in inicfg using the same syntax as
+the markers option.  For example::
+
+  [pytest]
+  optional_tests:
+    slow: slow tests
+    network: network tests
+    bug: regression tests against previous bugs
+
+Optional markers should NOT be declared using the `markers` attribute,
+even when using pytest's `strict` mode. 
+ 
+Optional test decorators are pytest markers, and the semantics are
+identical.
+
+If a test is decorated with multiple optional markers, the test will
+be executed when any of the markers is requested. For example::
+
+  @pytest.mark.network
+  @pytest.mark.slow
+  def test_slow_network_function(): ...
+
+will be tested if either or both of the optional `slow` or `network`
+tests are requested.
+
+Optional tests may be requested in the inicfg::
+
+  [pytest]
+  optional_tests:
+    slow: slow tests
+    network: network tests
+    bug: regression tests against previous bugs
+  run_optional_tests=network,slow
+
+or on the command line::
+
+  pytest --run-option-tests=network,slow
+
+
 
 
 Contributing

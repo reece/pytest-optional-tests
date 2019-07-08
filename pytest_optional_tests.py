@@ -1,29 +1,6 @@
 # -*- coding: utf-8 -*-
 """implements declaration of optional tests using pytest markers
 
-Optional tests are executed only when requested on the command line
-(--run-option-tests=...) or in the inicfg (run_optional_tests=...). 
-
-Optional tests must be declared in inicfg (optional_tests=...) using
-the same syntax as the markers option.  For example::
-
-  [tool:pytest]
-  optional_tests:
-    slow: slow tests
-    network: network tests
-    bug: regression tests against previous bugs
-
-Optional test decorators are markers, and the semantics are identical.
-If a test is decorated with multiple optional test markers, the test
-will be executed if any of the markers are requested. For example::
-
-  @pytest.mark.slow
-  @pytest.mark.network
-  def test_slow_network_function(): ...
-
-will be tested if either or both of the optional `slow` or `network`
-tests are requested.
-
 """
 
 
