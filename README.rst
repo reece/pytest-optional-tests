@@ -14,27 +14,24 @@ pytest-optional-tests
     :target: https://travis-ci.org/reece/pytest-optional-tests
     :alt: See Build Status on Travis CI
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/reece/pytest-optional-tests?branch=master
-    :target: https://ci.appveyor.com/project/reece/pytest-optional-tests/branch/master
-    :alt: See Build Status on AppVeyor
+Pytest plugin that supports easy declaration of optional
+tests. Optional tests are run only on request.
 
-Easy declaration of optional tests (i.e., that are not run by default)
+Example:
+
+```
+@optional.network
+@optional.longrunning
+def test_this():
+    assert False
+```
 
 ----
-
-This `pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
-
-
-Features
---------
-
-* TODO
-
 
 Requirements
 ------------
 
-* TODO
+* pytest > 3.5.0
 
 
 Installation
@@ -50,6 +47,7 @@ Usage
 
 * TODO
 
+
 Contributing
 ------------
 Contributions are very welcome. Tests can be run with `tox`_, please ensure
@@ -58,13 +56,18 @@ the coverage at least stays the same before you submit a pull request.
 License
 -------
 
-Distributed under the terms of the `MIT`_ license, "pytest-optional-tests" is free and open source software
+Distributed under the terms of the `MIT`_ license.
 
 
 Issues
 ------
 
 If you encounter any problems, please `file an issue`_ along with a detailed description.
+
+
+
+This `pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
+
 
 .. _`Cookiecutter`: https://github.com/audreyr/cookiecutter
 .. _`@hackebrot`: https://github.com/hackebrot
