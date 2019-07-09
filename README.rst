@@ -58,19 +58,27 @@ Optional markers must be declared in inicfg using the same syntax as
 the markers option.  For example::
 
   [pytest]
+  markers:
+    regression: tests against previous bugs
+ 
   optional_tests:
     slow: slow tests
     network: network tests
-    bug: regression tests against previous bugs
+
+Optional markers will be added to pytest's list of markers::
+
+  $ pytest --markers
+  regression: tests against previous bugs
+  slow: slow tests
+  network: network tests
 
 Optional markers should NOT be declared using the `markers` attribute,
-even when using pytest's `strict` mode. 
+even when using pytest's `strict` mode.
  
 Optional test decorators are pytest markers, and the semantics are
-identical.
-
-If a test is decorated with multiple optional markers, the test will
-be executed when any of the markers is requested. For example::
+identical.  If a test is decorated with multiple optional markers, the
+test will be executed when *any* of the markers is requested. For
+example::
 
   @pytest.mark.network
   @pytest.mark.slow
@@ -82,10 +90,12 @@ tests are requested.
 Optional tests may be requested in the inicfg::
 
   [pytest]
+  markers:
+    regression: tests against previous bugs
+ 
   optional_tests:
     slow: slow tests
     network: network tests
-    bug: regression tests against previous bugs
   
   run_optional_tests=network,slow
 
@@ -93,13 +103,6 @@ or on the command line::
 
   pytest --run-optional-tests=network,slow
 
-
-
-
-Contributing
-------------
-Contributions are very welcome. Tests can be run with `tox`_, please ensure
-the coverage at least stays the same before you submit a pull request.
 
 
 License
