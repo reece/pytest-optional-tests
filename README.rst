@@ -28,8 +28,8 @@ It is often useful to define tests that be run only when specifically
 requested, such as tests that are slow, require network access, or
 work only in certain environments.
 
-Pytest provides mechanisms to run tests based on test names (-k) and
-to filter tests based on markers (-m).  Neither mechanism makes it
+Pytest provides mechanisms to run tests based on test names (`-k`) and
+to filter tests based on markers (`-m`).  Neither mechanism makes it
 easy to surpress certain tests by default.  For example, one might
 decorate tests with `@pytest.mark.network`, but disabling it by
 default requires a marker expression like `-m "not network"` with
@@ -86,11 +86,12 @@ Optional tests may be requested in the inicfg::
     slow: slow tests
     network: network tests
     bug: regression tests against previous bugs
+  
   run_optional_tests=network,slow
 
 or on the command line::
 
-  pytest --run-option-tests=network,slow
+  pytest --run-optional-tests=network,slow
 
 
 
@@ -99,6 +100,7 @@ Contributing
 ------------
 Contributions are very welcome. Tests can be run with `tox`_, please ensure
 the coverage at least stays the same before you submit a pull request.
+
 
 License
 -------
@@ -112,19 +114,9 @@ Issues
 If you encounter any problems, please `file an issue`_ along with a detailed description.
 
 
-
-This `pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
-
-
-.. _`Cookiecutter`: https://github.com/audreyr/cookiecutter
-.. _`@hackebrot`: https://github.com/hackebrot
 .. _`MIT`: http://opensource.org/licenses/MIT
-.. _`BSD-3`: http://opensource.org/licenses/BSD-3-Clause
-.. _`GNU GPL v3.0`: http://www.gnu.org/licenses/gpl-3.0.txt
-.. _`Apache Software License 2.0`: http://www.apache.org/licenses/LICENSE-2.0
-.. _`cookiecutter-pytest-plugin`: https://github.com/pytest-dev/cookiecutter-pytest-plugin
 .. _`file an issue`: https://github.com/reece/pytest-optional-tests/issues
 .. _`pytest`: https://github.com/pytest-dev/pytest
 .. _`tox`: https://tox.readthedocs.io/en/latest/
 .. _`pip`: https://pypi.org/project/pip/
-.. _`PyPI`: https://pypi.org/project
+.. _`PyPI`: https://pypi.org/project/pytest-optional-tests/
