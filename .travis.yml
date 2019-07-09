@@ -2,22 +2,27 @@ sudo: false
 dist: xenial
 language: python
 
-matrix:
-    include:
-      - python: 3.5
-        env: TOX_ENV=py35
-      - python: 3.6
-        env: TOX_ENV=py36
-      - python: 3.7
-        env: TOX_ENV=py37
-      - python: pypy
-        env: TOX_ENV=pypy
-      - python: 3.7
-        env: TOX_ENV=flake8
+# matrix:
+#     include:
+#       - python: 3.5
+#         env: TOX_ENV=py35
+#       - python: 3.6
+#         env: TOX_ENV=py36
+#       - python: 3.7
+#         env: TOX_ENV=py37
+#       - python: pypy
+#         env: TOX_ENV=pypy
+#       - python: 3.7
+#         env: TOX_ENV=flake8
+
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
 
 install:
   - pip install -U setuptools pip
-  - pip install tox
+  - pip install tox tox-travis
 
 script:
   - tox -e $TOX_ENV
@@ -35,18 +40,18 @@ stages:
 
 # jobs:
 #   include:
-#   - stage: deploy
-#     python: 3.7
-#     install: skip
-#     script: skip
-#     deploy:
-#       provider: pypi
-#       user: reece
-#       skip_upload_docs: true
-#       skip_cleanup: true
-#       distributions: sdist bdist_wheel
-#       on:
-#         tags: true
-#         branch: master
-#       password:
-#         secure: P3YmoJ/Tb2ghvH3tkyDPPaRsHSz29vN+V9C5i9uYsZcXjPFbWwhpbKsE6qKcbwr/h+Zot6UTsrjzo5Ky9LCsAu0/JfILYodMNv291FSoANk8KS3JBmvkfqLRH6GXeConkmYrWB0pLTU+cFIHNBccHZHmONytj54FLUArsQayxia3TskKdY5T+uQGwG/jz+BrZ28qW29jgBqL1pFtoXq+u3RdyEGRbGV+Gcxv27JdhTfzr7DQrJP0Qw0NySjE17VdFqKUo8s1k4TSnIKJSprBiSSuAgPPPF6EaLuDEijsseiaYUDrjyd4arzeXNvm4xUspnC9G+1c0l4a/DDdOnvepBRS8DK3cKqxjwTHNX+RXY/THh3aTXjS10bC29pLwACJqApy6XSANH0KOPlah1wrPpFFbE29LnK1V/ZfKEhEWTtg/2Kcf2cXQhvC2i4dqColg4fTO14MlKbymVBux3r2NkO51EsK49J0SlsecuzM12Rvp4Jbm9wI7AUWAo6rcc+vk7S5P9ag0tBmLzIdDwMl2zbrhnqpFf3yf62ydzpQ4UT76CWRP2tjjzMxVQwqFa2Lbbk0gpRYS7KVpVEVO1dwqQNgVqpNZXFe6w01vUKVGQ85iO9N1CHBMKO1aMaD+P7p11uMbPAczska7aUP5CQbd0bAKIcWaJx7Y+XvphanTNY=
+#     - stage: deploy
+#       python: 3.7
+#       install: skip
+#       script: skip
+#       deploy:
+#         provider: pypi
+#         user: reece
+#         skip_upload_docs: true
+#         skip_cleanup: true
+#         distributions: sdist bdist_wheel
+#         on:
+#           tags: true
+#           branch: master
+#         password:
+#           secure: P3YmoJ/Tb2ghvH3tkyDPPaRsHSz29vN+V9C5i9uYsZcXjPFbWwhpbKsE6qKcbwr/h+Zot6UTsrjzo5Ky9LCsAu0/JfILYodMNv291FSoANk8KS3JBmvkfqLRH6GXeConkmYrWB0pLTU+cFIHNBccHZHmONytj54FLUArsQayxia3TskKdY5T+uQGwG/jz+BrZ28qW29jgBqL1pFtoXq+u3RdyEGRbGV+Gcxv27JdhTfzr7DQrJP0Qw0NySjE17VdFqKUo8s1k4TSnIKJSprBiSSuAgPPPF6EaLuDEijsseiaYUDrjyd4arzeXNvm4xUspnC9G+1c0l4a/DDdOnvepBRS8DK3cKqxjwTHNX+RXY/THh3aTXjS10bC29pLwACJqApy6XSANH0KOPlah1wrPpFFbE29LnK1V/ZfKEhEWTtg/2Kcf2cXQhvC2i4dqColg4fTO14MlKbymVBux3r2NkO51EsK49J0SlsecuzM12Rvp4Jbm9wI7AUWAo6rcc+vk7S5P9ag0tBmLzIdDwMl2zbrhnqpFf3yf62ydzpQ4UT76CWRP2tjjzMxVQwqFa2Lbbk0gpRYS7KVpVEVO1dwqQNgVqpNZXFe6w01vUKVGQ85iO9N1CHBMKO1aMaD+P7p11uMbPAczska7aUP5CQbd0bAKIcWaJx7Y+XvphanTNY=
