@@ -54,7 +54,8 @@ You can install "pytest-optional-tests" via `pip`_ from `PyPI`_::
 Usage
 -----
 
-Optional markers must be declared in inicfg using the same syntax as
+Optional markers must be declared in a `config file`_
+(e.g., ``pytest.ini``) using the same syntax as
 the markers option.  For example::
 
   [pytest]
@@ -72,8 +73,8 @@ Optional markers will be added to pytest's list of markers::
   slow: slow tests
   network: network tests
 
-Optional markers should NOT be declared using the `markers` attribute,
-even when using pytest's `strict` mode.
+Optional markers should NOT be declared using the ``markers`` attribute,
+even when using pytest's ``strict`` mode.
  
 Optional test decorators are pytest markers, and the semantics are
 identical.  If a test is decorated with multiple optional markers, the
@@ -84,7 +85,7 @@ example::
   @pytest.mark.slow
   def test_slow_network_function(): ...
 
-will be tested if either or both of the optional `slow` or `network`
+will be tested if either or both of the optional ``slow`` or ``network``
 tests are requested.
 
 Optional tests may be requested in the inicfg::
@@ -123,3 +124,4 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 .. _`tox`: https://tox.readthedocs.io/en/latest/
 .. _`pip`: https://pypi.org/project/pip/
 .. _`PyPI`: https://pypi.org/project/pytest-optional-tests/
+.. _`config file`: http://doc.pytest.org/en/latest/customize.html
