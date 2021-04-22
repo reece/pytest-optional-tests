@@ -24,6 +24,10 @@ def pytest_addoption(parser):
         default=None,
         help='Optional test markers to run, multiple and/or comma separated okay',
     )
+    parser.addini(
+        'optional_tests',
+        'Optional test markers to run, multiple and/or comma separated okay'
+    )
 
 
 def pytest_configure(config):
