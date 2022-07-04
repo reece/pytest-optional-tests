@@ -76,7 +76,7 @@ def pytest_collection_modifyitems(config, items):
         if test_otms & ot_run:
             # test is marked with an enabled optional test; don't skip
             continue
-        mns = str(marker_names)
+        mns = ", ".join(sorted(marker_names))
         if mns not in skips:
             skips[mns] = pytest.mark.skip(reason="Skipping; marked with disabled optional tests ({})".format(mns))
         item.add_marker(skips[mns])
