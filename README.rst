@@ -104,6 +104,14 @@ or on the command line::
   pytest --run-optional-tests=network,slow
 
 
+Development
+-----------
+
+    python3 -m venv venv $@
+    source venv/bin/activate
+    uv pip install -U setuptools pip uv pytest
+    uv pip install -e .
+
 
 License
 -------

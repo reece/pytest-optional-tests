@@ -12,7 +12,7 @@ import pytest
 
 _logger = logging.getLogger(__name__)
 
-marker_re = re.compile("^(?P<marker>\w+)(:\s*(?P<description>.*))?")
+marker_re = re.compile(r"^(?P<marker>\w+)(:\s*(?P<description>.*))?")
 
 
 def pytest_addoption(parser):
