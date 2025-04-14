@@ -1,0 +1,84 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools >= 75", "setuptools_scm[toml] >= 8"]
+
+[project]
+authors = [
+  {name = "Reece Hart", email = "reecehart@gmail.com"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Testing",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Operating System :: OS Independent",
+]
+description = "Easy declaration of optional tests (i.e., that are not run by default)"
+dynamic = ["version"]
+license = "MIT"
+license-files = ["LICENSE"]
+name = "pytest-optional-tests"
+readme = "README.rst"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = [
+  "build >= 0.10",
+  "flake8",
+  "pyright",
+  "ruff",
+  "toml-sort"
+]
+test = [
+  "pytest >= 8.3.0",
+  "pytest-runner"
+]
+
+# [project.scripts]
+# optional_tests = "pytest_optional_tests:main"
+
+[project.urls]
+"Bug Tracker" = "https://github.com/reece/pytest-optional-tests/issues"
+"Homepage" = "https://github.com/reece/pytest-optional-tests"
+
+[tool.flake8]
+exclude = [
+  ".eggs",
+  ".tox",
+  "build",
+  "dist",
+  "docs/conf.py",
+  "tests/*"
+]
+ignore = ["E129", "E221", "E241", "E251", "E303", "W291"]
+max-complexity = 10
+max-line-length = 120
+
+[tool.pyright]
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+  "all"
+]
+
+[tool.setuptools]
+include-package-data = true
+package-dir = {"" = "src"}
+zip-safe = true
+
+[tool.setuptools.packages.find]
+exclude = ["__pycache__", "*.pyc"]
+where = ["src"]
+
+[tool.setuptools_scm]
+
+# [tool.setuptools.dynamic]
+# version = {attr = "pytest_optional_tests.__version__"}
