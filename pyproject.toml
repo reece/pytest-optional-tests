@@ -18,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
-  "Operating System :: OS Independent",
+  "Operating System :: OS Independent"
 ]
 description = "Easy declaration of optional tests (i.e., that are not run by default)"
 dynamic = ["version"]
@@ -28,11 +28,16 @@ name = "pytest-optional-tests"
 readme = "README.rst"
 requires-python = ">=3.10"
 
+[project.entry-points.pytest11]
+# https://docs.pytest.org/en/7.1.x/how-to/writing_plugins.html#making-your-plugin-installable-by-others
+pytest_optional_tests = "pytest_optional_tests"
+
 [project.optional-dependencies]
 dev = [
   "build >= 0.10",
   "flake8",
   "pyright",
+  "pytest",
   "ruff",
   "toml-sort"
 ]
@@ -40,9 +45,6 @@ test = [
   "pytest >= 8.3.0",
   "pytest-runner"
 ]
-
-# [project.scripts]
-# optional_tests = "pytest_optional_tests:main"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/reece/pytest-optional-tests/issues"

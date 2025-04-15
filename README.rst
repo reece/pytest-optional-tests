@@ -107,11 +107,10 @@ or on the command line::
 Development
 -----------
 
-    python3 -m venv venv $@
+    python3 -m venv
     source venv/bin/activate
     uv pip install -U setuptools pip uv pytest
-    uv pip install -e .
-
+    uv pip install -e '.[dev]'
 
 License
 -------
