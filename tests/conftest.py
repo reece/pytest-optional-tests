@@ -6,7 +6,7 @@ pytest_plugins = ("pytester", "pytest_optional_tests")
 
 
 @pytest.fixture(scope="function")
-def pot_testdir(testdir, tmpdir):
+def pot_testdir(testdir):
     """construct tempdir of tests from templates"""
     basedir = os.path.dirname(__file__)
     datadir = os.path.join(basedir, "data")

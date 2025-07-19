@@ -16,13 +16,13 @@ marker_re = re.compile(r"^(?P<marker>\w+)(:\s*(?P<description>.*))?")
 
 
 def pytest_addoption(parser):
-    group = parser.getgroup('collect')
+    group = parser.getgroup("collect")
     group.addoption(
-        '--run-optional-tests',
-        action='append',
-        dest='run_optional_tests',
+        "--run-optional-tests",
+        action="append",
+        dest="run_optional_tests",
         default=None,
-        help='Optional test markers to run, multiple and/or comma separated okay',
+        help="Optional test markers to run, multiple and/or comma separated okay",
     )
 
 

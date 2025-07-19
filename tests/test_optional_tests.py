@@ -5,29 +5,6 @@ import re
 import pytest
 
 
-def test_help_message(pot_testdir):
-    """test CLI --help string"""
-    result = pot_testdir.runpytest(
-        '--help',
-    )
-    assert 0 == result.ret
-    assert None is result.stdout.re_match_lines([r"\s*--run-optional-tests=RUN_OPTIONAL_TESTS"])
-
-
-def test_markers(pot_testdir):
-    """test generating the list of declared marks"""
-    result = pot_testdir.runpytest(
-        '--markers',
-    )
-    assert 0 == result.ret
-    assert None is result.stdout.re_match_lines([
-        r"@pytest\.mark\.marked",
-        r"@pytest\.mark\.opt1",
-        r"@pytest\.mark\.opt2",
-        r"@pytest\.mark\.opt3",
-        ])
-
-
 # There are four invocation cases of the templated tests:
 # - with no arguments => 
 # - with --run-optional-tests=opt1
@@ -44,9 +21,35 @@ test_cases = [
 test_ids = [str(t["args"]) for t in test_cases]
 
 
+def test_help_message(pot_testdir):
+    """test CLI --help string"""
+    result = pot_testdir.runpytest(
+        "--help",
+    )
+    assert 0 == result.ret
+    # re_match_lines calls pytest.fail if lines do not match
+    result.stdout.re_match_lines([r"\s*--run-optional-tests=RUN_OPTIONAL_TESTS"])
+
+
+def test_markers(pot_testdir):
+    """test generating the list of declared marks"""
+    result = pot_testdir.runpytest(
+        "--markers",
+    )
+    assert 0 == result.ret
+
+    # re_match_lines calls pytest.fail if lines do not match
+    result.stdout.re_match_lines([
+        r"@pytest\.mark\.marked",
+        r"@pytest\.mark\.opt1",
+        r"@pytest\.mark\.opt2",
+        r"@pytest\.mark\.opt3",
+        ])
+
+
 @pytest.mark.parametrize("t", test_cases, ids=test_ids)
 def test_collection(pot_testdir, t):
-    opts = ['-vs', '--strict']
+    opts = ["-vs", "--strict"]
     if t["args"]:
         opts += ["--run-optional-tests={}".format(",".join(t["args"]))]
 
