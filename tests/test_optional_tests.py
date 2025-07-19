@@ -42,6 +42,7 @@ def test_markers(pot_testdir):
         r"@pytest\.mark\.opt1",
         r"@pytest\.mark\.opt2",
         r"@pytest\.mark\.opt3",
+        r"@pytest\.mark\.opt4",
         ])
 
 

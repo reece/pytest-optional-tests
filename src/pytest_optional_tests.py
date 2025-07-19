@@ -22,7 +22,11 @@ def pytest_addoption(parser):
         action="append",
         dest="run_optional_tests",
         default=None,
-        help="Optional test markers to run, multiple and/or comma separated okay",
+        help="Optional test markers to run, space and/or comma separated okay",
+    )
+    parser.addini(
+        "run_optional_tests",
+        "Optional test markers to run, space and/or comma separated okay"
     )
 
 
