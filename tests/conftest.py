@@ -5,9 +5,9 @@ import pytest
 pytest_plugins = 'pytester'
 
 
-
 @pytest.fixture(scope="function")
 def pot_testdir(testdir, tmpdir):
+    """construct tempdir of tests from templates"""
     basedir = os.path.dirname(__file__)
     datadir = os.path.join(basedir, "data")
     for f in ["test_pot.py", "pytest.ini"]:

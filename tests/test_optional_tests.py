@@ -6,6 +6,7 @@ import pytest
 
 
 def test_help_message(pot_testdir):
+    """test CLI --help string"""
     result = pot_testdir.runpytest(
         '--help',
     )
@@ -14,23 +15,31 @@ def test_help_message(pot_testdir):
 
 
 def test_markers(pot_testdir):
+    """test generating the list of declared marks"""
     result = pot_testdir.runpytest(
         '--markers',
     )
     assert 0 == result.ret
     assert None is result.stdout.re_match_lines([
-        r"@pytest\.mark\.other",
+        r"@pytest\.mark\.marked",
         r"@pytest\.mark\.opt1",
         r"@pytest\.mark\.opt2",
         r"@pytest\.mark\.opt3",
         ])
 
 
+# There are four invocation cases of the templated tests:
+# - with no arguments => 
+# - with --run-optional-tests=opt1
+# - with --run-optional-tests=opt2
+# - with --run-optional-tests=opt1,opt2
+# Unmarked and (conventionally) marked functions are always run
+# opt1 and opt2 functions are run only when the corresponding optional mark is specified
 test_cases = [
-    {"args": None,  "exp": set("no_mark                 other".split())},
-    {"args": (1,),  "exp": set("no_mark opt1 opt12      other".split())},
-    {"args": (2,),  "exp": set("no_mark      opt12 opt2 other".split())},
-    {"args": (1,2), "exp": set("no_mark opt1 opt12 opt2 other".split())},
+    {"args": None,             "exp": set("unmarked marked                ".split())},
+    {"args": ["opt1"        ], "exp": set("unmarked marked opt1      opt12".split())},
+    {"args": [        "opt2"], "exp": set("unmarked marked      opt2 opt12".split())},
+    {"args": ["opt1", "opt2"], "exp": set("unmarked marked opt1 opt2 opt12".split())},
     ]
 test_ids = [str(t["args"]) for t in test_cases]
 
@@ -39,8 +48,7 @@ test_ids = [str(t["args"]) for t in test_cases]
 def test_collection(pot_testdir, t):
     opts = ['-vs', '--strict']
     if t["args"]:
-        ots = ["opt{}".format(n) for n in t["args"]]
-        opts += ["--run-optional-tests={}".format(",".join(ots))]
+        opts += ["--run-optional-tests={}".format(",".join(t["args"]))]
 
     result = pot_testdir.runpytest(*opts)
     assert 0 == result.ret
