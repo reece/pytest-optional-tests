@@ -1,17 +1,8 @@
-pytest-optional-tests
-=====================
+# pytest-optional-tests
 
-.. image:: https://img.shields.io/pypi/v/pytest-optional-tests.svg
-    :target: https://pypi.org/project/pytest-optional-tests
-    :alt: PyPI version
+[![PyPI version](https://img.shields.io/pypi/v/pytest-optional-tests.svg)](https://pypi.org/project/pytest-optional-tests)
 
-.. image:: https://img.shields.io/pypi/pyversions/pytest-optional-tests.svg
-    :target: https://pypi.org/project/pytest-optional-tests
-    :alt: Python versions
-
-.. image:: https://travis-ci.org/reece/pytest-optional-tests.svg?branch=master
-    :target: https://travis-ci.org/reece/pytest-optional-tests
-    :alt: See Build Status on Travis CI
+[![Python versions](https://img.shields.io/pypi/pyversions/pytest-optional-tests.svg)](https://pypi.org/project/pytest-optional-tests)
 
 
 Provides easy declaration of optional tests using pytest markers.
@@ -20,8 +11,7 @@ line.
 
 ----
 
-Motivation
-----------
+## Motivation
 
 Some classes of tests should not be run with every test invocation.
 It is often useful to define tests that be run only when specifically
@@ -43,34 +33,32 @@ markers, including multiple optional markers.  Optional tests may be
 enabled in the pytest ini file or the command line.
 
 
-Installation
-------------
+## Installation
 
-You can install "pytest-optional-tests" via `pip`_ from `PyPI`_::
+You can install "pytest-optional-tests" from [PyPI](https://pypi.org/project/pytest-optional-tests/):
 
     $ pip install pytest-optional-tests
 
 
-Usage
------
+## Usage
 
 Optional markers must be declared in inicfg using the same syntax as
 the markers option.  For example::
 
-  [pytest]
-  markers:
-    regression: tests against previous bugs
- 
-  optional_tests:
-    slow: slow tests
-    network: network tests
+    [pytest]
+    markers:
+      regression: tests against previous bugs
+
+    optional_tests:
+      slow: slow tests
+      network: network tests
 
 Optional markers will be added to pytest's list of markers::
 
-  $ pytest --markers
-  regression: tests against previous bugs
-  slow: slow tests
-  network: network tests
+    $ pytest --markers
+    regression: tests against previous bugs
+    slow: slow tests
+    network: network tests
 
 Optional markers should NOT be declared using the `markers` attribute,
 even when using pytest's `strict` mode.
@@ -80,53 +68,42 @@ identical.  If a test is decorated with multiple optional markers, the
 test will be executed when *any* of the markers is requested. For
 example::
 
-  @pytest.mark.network
-  @pytest.mark.slow
-  def test_slow_network_function(): ...
+    @pytest.mark.network
+    @pytest.mark.slow
+    def test_slow_network_function(): ...
 
 will be tested if either or both of the optional `slow` or `network`
 tests are requested.
 
 Optional tests may be requested in the inicfg::
 
-  [pytest]
-  markers:
-    regression: tests against previous bugs
- 
-  optional_tests:
-    slow: slow tests
-    network: network tests
+    [pytest]
+    markers:
+      regression: tests against previous bugs
   
-  run_optional_tests=network,slow
+    optional_tests:
+      slow: slow tests
+      network: network tests
+    
+    run_optional_tests=network,slow
 
 or on the command line::
 
-  pytest --run-optional-tests=network,slow
+    pytest --run-optional-tests=network,slow
 
 
-Development
------------
+## Development
 
     python3 -m venv
     source venv/bin/activate
     uv pip install -U setuptools pip uv pytest
     uv pip install -e '.[dev]'
 
-License
--------
+## License
 
-Distributed under the terms of the `MIT`_ license.
-
-
-Issues
-------
-
-If you encounter any problems, please `file an issue`_ along with a detailed description.
+Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) license.
 
 
-.. _`MIT`: http://opensource.org/licenses/MIT
-.. _`file an issue`: https://github.com/reece/pytest-optional-tests/issues
-.. _`pytest`: https://github.com/pytest-dev/pytest
-.. _`tox`: https://tox.readthedocs.io/en/latest/
-.. _`pip`: https://pypi.org/project/pip/
-.. _`PyPI`: https://pypi.org/project/pytest-optional-tests/
+## Issues
+
+If you encounter any problems, please [file an issue](https://github.com/reece/pytest-optional-tests/issues) along with a detailed description.
