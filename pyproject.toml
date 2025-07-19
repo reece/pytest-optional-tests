@@ -70,6 +70,10 @@ include = ["src", "tests"]
 filterwarnings = [
   "all"
 ]
+norecursedirs = [
+  "tests/examples"
+]
+pytester_example_dir = "tests/examples"
 
 [tool.setuptools]
 include-package-data = true
@@ -81,6 +85,3 @@ exclude = ["__pycache__", "*.pyc"]
 where = ["src"]
 
 [tool.setuptools_scm]
-
-# [tool.setuptools.dynamic]
-# version = {attr = "pytest_optional_tests.__version__"}
