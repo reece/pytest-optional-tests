@@ -15,3 +15,8 @@ def pot_testdir(testdir, tmpdir):
         dst = os.path.join(str(testdir), f)
         shutil.copy(src, dst)
     return testdir
+
+
+def pytest_sessionstart(session):
+    """Ensure that pytest_optional_tests is available"""
+    import pytest_optional_tests
