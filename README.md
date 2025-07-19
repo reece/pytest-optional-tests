@@ -42,8 +42,8 @@ You can install "pytest-optional-tests" from [PyPI](https://pypi.org/project/pyt
 
 ## Usage
 
-Optional markers must be declared in inicfg using the same syntax as
-the markers option.  For example::
+Optional markers must be declared in a [config file](https://docs.pytest.org/en/stable/reference/customize.html) using the same syntax as
+the markers option.  For example:
 
     [pytest]
     markers:
@@ -53,7 +53,7 @@ the markers option.  For example::
       slow: slow tests
       network: network tests
 
-Optional markers will be added to pytest's list of markers::
+Optional markers will be added to pytest's list of markers:
 
     $ pytest --markers
     regression: tests against previous bugs
@@ -66,7 +66,7 @@ even when using pytest's `strict` mode.
 Optional test decorators are pytest markers, and the semantics are
 identical.  If a test is decorated with multiple optional markers, the
 test will be executed when *any* of the markers is requested. For
-example::
+example:
 
     @pytest.mark.network
     @pytest.mark.slow
@@ -75,7 +75,7 @@ example::
 will be tested if either or both of the optional `slow` or `network`
 tests are requested.
 
-Optional tests may be requested in the inicfg::
+Optional tests may be requested in the inicfg:
 
     [pytest]
     markers:
@@ -87,10 +87,9 @@ Optional tests may be requested in the inicfg::
     
     run_optional_tests=network,slow
 
-or on the command line::
+or on the command line:
 
     pytest --run-optional-tests=network,slow
-
 
 ## Development
 
