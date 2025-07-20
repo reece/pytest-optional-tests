@@ -5,33 +5,19 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/pytest-optional-tests.svg)](https://pypi.org/project/pytest-optional-tests)
 
 
-Provides easy declaration of optional tests using pytest markers.
-Optional tests are run only on request via the config file or command
-line.
-
-----
+Enables the declaration of optional tests that are run only on request via the config file or command line
 
 ## Motivation
 
-Some classes of tests should not be run with every test invocation.
-It is often useful to define tests that be run only when specifically
-requested, such as tests that are slow, require network access, or
-work only in certain environments.
+It is often useful to declare that certain tests that are run only when
+requested, such as tests that are computationally expensive or slow, require
+network access, or work only in certain environments.
 
-Pytest provides mechanisms to run tests based on test names (`-k`) and
-to filter tests based on markers (`-m`).  Neither mechanism makes it
-easy to surpress certain tests by default.  For example, one might
-decorate tests with `@pytest.mark.network`, but disabling it by
-default requires a marker expression like `-m "not network"` with
-every invocation.  Markers and marker expressions become unwieldy when
-there are many markers.
-
-This plugin enables users to declare that certain markers are
-"optional markers".  When tests are decorated with an optional marker,
-the test is skipped by default.  Tests may be decorated with multiple
-markers, including multiple optional markers.  Optional tests may be
-enabled in the pytest ini file or the command line.
-
+This plugin enables certain markers to be declared as "optional test markers".
+When tests are decorated with one or more optional test markers, the test is
+skipped by default.  Optional tests may be enabled in the pytest ini file or the
+command line.  Tests may be decorated with multiple markers, including multiple
+optional markers.
 
 ## Installation
 
@@ -39,17 +25,17 @@ You can install "pytest-optional-tests" from [PyPI](https://pypi.org/project/pyt
 
     $ pip install pytest-optional-tests
 
-
 ## Usage
 
-Optional markers must be declared in a [config file](https://docs.pytest.org/en/stable/reference/customize.html) using the same syntax as
-the markers option.  For example:
+Optional markers must be declared in a [config
+file](https://docs.pytest.org/en/stable/reference/customize.html) using the same
+syntax as the markers option.  For example:
 
     [pytest]
-    markers:
+    markers=
       regression: tests against previous bugs
 
-    optional_tests:
+    optional_tests=
       slow: slow tests
       network: network tests
 
@@ -60,12 +46,11 @@ Optional markers will be added to pytest's list of markers:
     slow: slow tests
     network: network tests
 
-Optional markers should NOT be declared using the `markers` attribute,
+Optional markers should NOT be declared using the `markers` config attribute,
 even when using pytest's `strict` mode.
  
-Optional test decorators are pytest markers, and the semantics are
-identical.  If a test is decorated with multiple optional markers, the
-test will be executed when *any* of the markers is requested. For
+Optional test markers are pytest markers and the semantics are nearly
+identical except that they cause a test to be skipped by default and run only when requested.  If a test is decorated with multiple optional markers, the test will be executed when *any* of the markers is requested. For
 example:
 
     @pytest.mark.network
@@ -73,18 +58,8 @@ example:
     def test_slow_network_function(): ...
 
 will be tested if either or both of the optional `slow` or `network`
-tests are requested.
+tests are requested.  Optional tests may be requested in pytest.ini:
 
-Optional tests may be requested in the inicfg:
-
-    [pytest]
-    markers:
-      regression: tests against previous bugs
-  
-    optional_tests:
-      slow: slow tests
-      network: network tests
-    
     run_optional_tests=network,slow
 
 or on the command line:
@@ -98,10 +73,18 @@ or on the command line:
     uv pip install -U setuptools pip uv pytest
     uv pip install -e '.[dev]'
 
+
+## Motivation and Design
+
+Pytest [markers](https://docs.pytest.org/en/stable/reference/reference.html#marks) make it easy to run a subset of tests, but doesn't skip those tests. The pytest [skip](https://docs.pytest.org/en/stable/reference/reference.html#pytest-skip) and [skipif](https://docs.pytest.org/en/stable/reference/reference.html#pytest-mark-skipif) marks provide skipping functionality, but such tests can't be re-enabled.  That is, a test that is marked with both `@pytest.mark.skip()` (or `skipif`) and `@pytest.mark.network` will *not* be run with `-m network`.
+
+This plugin augments [pyteest markers](https://docs.pytest.org/en/stable/example/markers.html) functionality to provide for optional tests, which means that it inherits existing marker functionality, like listing declared markers and checking strictness.
+
+Currently, there's one unfortunate consequence of this choice: an optional test is enabled ONLY with `--run-optional-test=` with an optional test name.  Specifically, `-m` does not enable a test when the argument is an optional test name OR is the name of another mark on the same test. Both of these could be addressed.
+
 ## License
 
 Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) license.
-
 
 ## Issues
 
