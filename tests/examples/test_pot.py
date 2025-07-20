@@ -15,8 +15,15 @@ def test_opt1():
     pass
 
 @pytest.mark.opt2
-def test_opt2():
+@pytest.mark.marked
+def test_opt2_marked():
     """test for running when opt2 mark is specified"""
+    pass
+
+@pytest.mark.marked
+@pytest.mark.opt3
+def test_marked_opt3():
+    """test for running when opt3 mark is specified"""
     pass
 
 @pytest.mark.opt1
