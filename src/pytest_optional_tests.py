@@ -25,8 +25,12 @@ def pytest_addoption(parser):
         help="Optional test markers to run, space and/or comma separated okay",
     )
     parser.addini(
-        "run_optional_tests",
-        "Optional test markers to run, space and/or comma separated okay"
+        'run_optional_tests',
+        'Optional test markers to run, multiple and/or comma separated okay'
+    )
+    parser.addini(
+        "optional_tests",
+        "Declaration of optional tests"
     )
 
 
@@ -59,8 +63,8 @@ def pytest_configure(config):
         if unknown_tests:
             raise ValueError("Requested execution of undeclared optional tests: {}".format(", ".join(unknown_tests)))
 
-    config._ot_markers = set(ot_markers)
-    config._ot_run = set(ot_run)
+    config._ot_markers = ot_markers
+    config._ot_run = ot_run
     
 
 def pytest_collection_modifyitems(config, items):
