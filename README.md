@@ -4,7 +4,6 @@
 
 [![Python versions](https://img.shields.io/pypi/pyversions/pytest-optional-tests.svg)](https://pypi.org/project/pytest-optional-tests)
 
-
 Enables the declaration of optional tests that are run only on request via the config file or command line
 
 ## Motivation
@@ -23,7 +22,7 @@ optional markers.
 
 You can install "pytest-optional-tests" from [PyPI](https://pypi.org/project/pytest-optional-tests/):
 
-    $ pip install pytest-optional-tests
+    pip install pytest-optional-tests
 
 ## Usage
 
@@ -48,7 +47,7 @@ Optional markers will be added to pytest's list of markers:
 
 Optional markers should NOT be declared using the `markers` config attribute,
 even when using pytest's `strict` mode.
- 
+
 Optional test markers are pytest markers and the semantics are nearly
 identical except that they cause a test to be skipped by default and run only when requested.  If a test is decorated with multiple optional markers, the test will be executed when *any* of the markers is requested. For
 example:
@@ -72,7 +71,6 @@ or on the command line:
     source venv/bin/activate
     uv pip install -U setuptools pip uv pytest
     uv pip install -e '.[dev]'
-
 
 ## Motivation and Design
 
