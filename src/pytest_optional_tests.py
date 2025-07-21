@@ -68,16 +68,16 @@ def pytest_configure(config):
     
 
 def pytest_collection_modifyitems(config, items):
-    # https://stackoverflow.com/a/50114028/342839
+    """add skip marks to tests declared as optional when opt mark is disabled (i.e., not requested)"""
     ot_markers = config._ot_markers
     ot_run = config._ot_run
 
     skip_marks = {}
     for item in items:
-        marker_names = set(m.name for m in item.iter_markers())
-        if not marker_names:
+        item_markers = set(m.name for m in item.iter_markers())
+        if not item_markers:
             continue
-        test_otms = marker_names & ot_markers
+        test_otms = item_markers & ot_markers
         if not test_otms:
             # test is not marked with any optional marker
             continue
