@@ -24,6 +24,8 @@ You can install "pytest-optional-tests" from [PyPI](https://pypi.org/project/pyt
 
     pip install pytest-optional-tests
 
+Requires Python 3.10 or newer and pytest 8 or newer.
+
 ## Usage
 
 Optional markers must be declared in a [config
@@ -65,6 +67,25 @@ or on the command line:
 
     pytest --run-optional-tests=network,slow
 
+Marker names may be separated by commas or whitespace, and the command-line
+option may be repeated. Command-line selections override `run_optional_tests`
+in the configuration file.
+
+In `pyproject.toml`, use lists or multi-line strings under
+`[tool.pytest.ini_options]`:
+
+```toml
+[tool.pytest.ini_options]
+optional_tests = [
+  "slow: slow tests",
+  "network: network tests",
+]
+run_optional_tests = ["network", "slow"]
+```
+
+With pytest 9 or newer, the same options may instead be placed under the native
+`[tool.pytest]` table. Blank lines in marker definitions are ignored.
+
 ## Development
 
     python3 -m venv
@@ -78,7 +99,7 @@ Pytest [markers](https://docs.pytest.org/en/stable/reference/reference.html#mark
 
 This plugin augments [pyteest markers](https://docs.pytest.org/en/stable/example/markers.html) functionality to provide for optional tests, which means that it inherits existing marker functionality, like listing declared markers and checking strictness.
 
-Currently, there's one unfortunate consequence of this choice: an optional test is enabled ONLY with `--run-optional-test=` with an optional test name.  Specifically, `-m` does not enable a test when the argument is an optional test name OR is the name of another mark on the same test. Both of these could be addressed.
+Currently, there's one unfortunate consequence of this choice: an optional test is enabled only with `--run-optional-tests=` or `run_optional_tests` in the configuration file.  Specifically, `-m` does not enable a test when the argument is an optional test name OR is the name of another mark on the same test. Both of these could be addressed.
 
 ## License
 
