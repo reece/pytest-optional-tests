@@ -1,0 +1,38 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: "3.10"
+            pytest: "8.4.2"
+          - python: "3.12"
+            pytest: "9.1.1"
+          - python: "3.15"
+            pytest: "9.1.1"
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install build tools
+        run: python -m pip install build==1.6.1
+      - name: Build sdist and wheel
+        run: python -m build
+      - name: Install wheel in a clean environment and check plugin loading
+        run: |
+          python -m venv "$RUNNER_TEMP/wheel-env"
+          "$RUNNER_TEMP/wheel-env/bin/python" -m pip install dist/*.whl "pytest==${{ matrix.pytest }}"
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/wheel-env/bin/python" -m pytest --help
+      - name: Test installed wheel
+        run: '"$RUNNER_TEMP/wheel-env/bin/python" -m pytest -W error'

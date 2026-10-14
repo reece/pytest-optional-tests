@@ -63,3 +63,71 @@ def test_collection(pot_testdir, t):
     assert t["exp"] == passed_tests
 
 
+@pytest.mark.parametrize("config_style", [
+    "ini",
+    "toml_multiline",
+    "toml_list",
+    pytest.param(
+        "native_toml",
+        marks=pytest.mark.skipif(
+            int(pytest.__version__.split(".")[0]) < 9,
+            reason="Native TOML configuration requires pytest 9",
+        ),
+    ),
+])
+@pytest.mark.parametrize("requested,args,enabled", [
+    ("", [], set()),
+    ("opt1, opt2\nopt3", [], {"opt1", "opt2", "opt3"}),
+    ("opt1 opt2", [], {"opt1", "opt2"}),
+    ("opt1", ["--run-optional-tests=opt2"], {"opt2"}),
+    ("opt1", ["--run-optional-tests=opt2 opt3", "--run-optional-tests=opt1,"],
+     {"opt1", "opt2", "opt3"}),
+])
+def test_config_parsing(pytester, config_style, requested, args, enabled):
+    definitions = ["", "  opt1: optional test 1", "   ",
+                   "opt2: optional test 2", "opt3: optional test 3", ""]
+    if config_style == "ini":
+        pytester.makeini(
+            "[pytest]\noptional_tests =\n    " + "\n    ".join(definitions)
+            + "\nrun_optional_tests =\n    " + requested.replace("\n", "\n    ")
+        )
+    else:
+        section = "tool.pytest" if config_style == "native_toml" else "tool.pytest.ini_options"
+        if config_style == "toml_multiline":
+            options = 'optional_tests = """\n' + "\n".join(definitions) + '\n"""\n'
+            options += 'run_optional_tests = """\n' + requested + '\n"""\n'
+        else:
+            options = f"optional_tests = {definitions!r}\n"
+            options += f"run_optional_tests = {requested.splitlines()!r}\n"
+        pytester.makefile(".toml", pyproject=f"[{section}]\n{options}")
+    pytester.makepyfile(test_config="""
+        import pytest
+
+        def test_unmarked():
+            pass
+
+        @pytest.mark.opt1
+        def test_opt1():
+            pass
+
+        @pytest.mark.opt2
+        def test_opt2():
+            pass
+
+        @pytest.mark.opt3
+        def test_opt3():
+            pass
+    """)
+
+    result = pytester.runpytest("-v", "--strict-markers", "-W", "error", *args)
+    assert result.ret == 0
+    result.assert_outcomes(passed=1 + len(enabled), skipped=3 - len(enabled))
+    for marker in ("opt1", "opt2", "opt3"):
+        status = "PASSED" if marker in enabled else "SKIPPED"
+        result.stdout.fnmatch_lines([f"*test_config.py::test_{marker} {status}*"])
+
+
+def test_skip_reason(pot_testdir):
+    result = pot_testdir.runpytest("-rs")
+    assert result.ret == 0
+    result.stdout.fnmatch_lines(["*Optional test; activate with `--run-optional-tests=`*"])

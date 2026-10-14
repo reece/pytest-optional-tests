@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools >= 75", "setuptools_scm[toml] >= 8"]
+requires = ["setuptools >= 75"]
 
 [project]
 authors = [
@@ -17,16 +17,19 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Programming Language :: Python :: Implementation :: CPython",
   "Operating System :: OS Independent"
 ]
 description = "Easy declaration of optional tests (i.e., that are not run by default)"
-dynamic = ["version"]
+dependencies = ["pytest >= 8"]
 license = "MIT"
 license-files = ["LICENSE"]
 name = "pytest-optional-tests"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.10"
+version = "0.1.4"
 
 [project.entry-points.pytest11]
 # https://docs.pytest.org/en/7.1.x/how-to/writing_plugins.html#making-your-plugin-installable-by-others
@@ -78,10 +81,9 @@ pytester_example_dir = "tests/examples"
 [tool.setuptools]
 include-package-data = true
 package-dir = {"" = "src"}
+py-modules = ["pytest_optional_tests"]
 zip-safe = true
 
 [tool.setuptools.packages.find]
 exclude = ["__pycache__", "*.pyc"]
 where = ["src"]
-
-[tool.setuptools_scm]

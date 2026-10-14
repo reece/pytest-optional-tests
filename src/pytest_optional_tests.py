@@ -4,7 +4,6 @@
 """
 
 
-import itertools
 import logging
 import re
 
@@ -26,22 +25,20 @@ def pytest_addoption(parser):
     )
     parser.addini(
         'run_optional_tests',
-        'Optional test markers to run, multiple and/or comma separated okay'
+        'Optional test markers to run, multiple and/or comma separated okay',
+        type="linelist",
     )
     parser.addini(
         "optional_tests",
-        "Declaration of optional tests"
+        "Declaration of optional tests",
+        type="linelist",
     )
 
 
 def pytest_configure(config):
     # register all optional tests declared in ini file as markers
     # https://docs.pytest.org/en/latest/writing_plugins.html#registering-custom-markers
-    ot_ini = config.inicfg.get("optional_tests")  # None if NA
-    if ot_ini:
-        ot_ini = ot_ini.split("\n")
-    else:
-        ot_ini = []
+    ot_ini = [line.strip() for line in config.getini("optional_tests") if line.strip()]
     for ot in ot_ini:
         # ot should be a line like "optmarker: this is an opt marker", as with markers section
         config.addinivalue_line("markers", ot)
@@ -49,13 +46,9 @@ def pytest_configure(config):
 
     # collect requested optional tests
     ot_run = config.getoption("run_optional_tests")
-    if ot_run:
-        ot_run = list(itertools.chain.from_iterable(a.split(",") for a in ot_run))
-    else:
-        ot_run = config.inicfg.get("run_optional_tests", [])
-        if ot_run:
-            ot_run = list(re.split(r"[,\s]+", ot_run))
-    ot_run = set(ot_run)
+    if not ot_run:
+        ot_run = config.getini("run_optional_tests")
+    ot_run = {marker for line in ot_run for marker in re.split(r"[,\s]+", line) if marker}
 
     _logger.info("optional tests to run:", ot_run)
     if ot_run:
@@ -86,5 +79,5 @@ def pytest_collection_modifyitems(config, items):
             continue
         test_otms_str = ",".join(sorted(test_otms))
         if test_otms_str not in skip_marks:
-            skip_marks[test_otms_str] = pytest.mark.skip(reason="Optional test; activate with `--run-optional_tests=` and any of " + str(sorted(test_otms)))
+            skip_marks[test_otms_str] = pytest.mark.skip(reason="Optional test; activate with `--run-optional-tests=` and any of " + str(sorted(test_otms)))
         item.add_marker(skip_marks[test_otms_str])
